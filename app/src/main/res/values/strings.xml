@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ChatApp</string>
+    <string name="name_register">Name</string>
+    <string name="register_textview">Register</string>
+    <string name="email_register">Email Address</string>
+    <string name="sign_up_button">Sign Up</string>
+</resources>
