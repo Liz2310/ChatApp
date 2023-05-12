@@ -1,7 +1,17 @@
 <resources>
     <string name="app_name">ChatApp</string>
-    <string name="name_register">Name</string>
     <string name="register_textview">Register</string>
-    <string name="email_register">Email Address</string>
     <string name="sign_up_button">Sign Up</string>
+    <string name="messages_txt">Messages</string>
+    <string name="fullname_txt">Fullname</string>
+    <string name="last_message_txt">Last Message</string>
+    <string name="number_one">1</string>
+    <string name="email_signin">Email</string>
+    <string name="password_sigin">Password</string>
+    <string name="username_txt">Username</string>
+    <string name="log_in_txt">Log In</string>
+    <string name="log_in_btn">Log In</string>
+    <string name="chat_app_txt">Chat App</string>
+    <string name="login">Login</string>
+    <string name="welcome">Welcome</string>
 </resources>
