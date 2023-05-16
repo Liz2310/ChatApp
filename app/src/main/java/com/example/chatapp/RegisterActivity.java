@@ -27,8 +27,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     ActivityRegisterBinding activityRegisterBinding;
 
-//    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://chatapp-77d1d-default-rtdb.firebaseio.com/");
-
     FirebaseAuth auth;
     DatabaseReference reference;
 

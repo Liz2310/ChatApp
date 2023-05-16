@@ -10,10 +10,28 @@ import android.widget.EditText;
 
 import com.example.chatapp.databinding.ActivityLoginBinding;
 import com.example.chatapp.databinding.ActivityStartBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.ktx.Firebase;
 
 public class StartActivity extends AppCompatActivity {
 
     ActivityStartBinding activityStartBinding;
+    FirebaseUser firebaseUser;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        // user already logged in
+        if (firebaseUser != null){
+            Intent intent = new Intent(StartActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
