@@ -59,17 +59,15 @@ public class MessageActivity extends AppCompatActivity {
         final EditText message = activityMessageBinding.message;
 
         recyclerView = activityMessageBinding.recyclerView;
-
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MessageActivity.this);
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         Intent intent = getIntent();
-        String userid = intent.getStringExtra("userid");
+        final String userid = intent.getStringExtra("userid");
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
 
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +132,7 @@ public class MessageActivity extends AppCompatActivity {
 
                     messageAdapter = new MessageAdapter(MessageActivity.this, curr_chat, imageurl);
                     recyclerView.setAdapter(messageAdapter);
+                    messageAdapter.notifyDataSetChanged();
                 }
             }
 

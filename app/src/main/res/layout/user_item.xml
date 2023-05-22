@@ -20,6 +20,6 @@
         android:layout_centerVertical="true"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="@color/white"/>
+        android:textColor="#DF5C5858"/>
 
 </RelativeLayout>

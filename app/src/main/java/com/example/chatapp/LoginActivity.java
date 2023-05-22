@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chatapp.databinding.ActivityLoginBinding;
@@ -35,6 +36,14 @@ public class LoginActivity extends AppCompatActivity {
         final EditText email = activityLoginBinding.email;
         final EditText password = activityLoginBinding.password;
         final AppCompatButton login_btn = activityLoginBinding.loginBtn;
+        final TextView forgot_password = activityLoginBinding.forgotPassword;
+
+        forgot_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
+            }
+        });
 
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
