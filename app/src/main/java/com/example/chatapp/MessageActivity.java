@@ -1,11 +1,16 @@
 package com.example.chatapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +26,8 @@ import com.example.chatapp.Models.Chat;
 import com.example.chatapp.Models.User;
 import com.example.chatapp.databinding.ActivityMainBinding;
 import com.example.chatapp.databinding.ActivityMessageBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,10 +35,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class MessageActivity extends AppCompatActivity {
 
@@ -42,7 +54,6 @@ public class MessageActivity extends AppCompatActivity {
     MessageAdapter messageAdapter;
     RecyclerView recyclerView;
     List<Chat> curr_chat;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +68,7 @@ public class MessageActivity extends AppCompatActivity {
         final TextView username = activityMessageBinding.username;
         final ImageButton send_btn = activityMessageBinding.sendBtn;
         final EditText message = activityMessageBinding.message;
+
 
         recyclerView = activityMessageBinding.recyclerView;
         recyclerView.setHasFixedSize(true);
@@ -73,7 +85,7 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String msg = message.getText().toString();
-                if(!msg.equals("")){
+                if (!msg.equals("")) {
                     sendMessage(firebaseUser.getUid(), userid, msg);
                 } else {
                     Toast.makeText(MessageActivity.this, "Can't send empty message", Toast.LENGTH_SHORT).show();
@@ -82,6 +94,7 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
+
         reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -89,9 +102,9 @@ public class MessageActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
                 username.setText(user.getUsername());
-                if (user.getImageUrl().equals("default")){
+                if (user.getImageUrl().equals("default")) {
                     userProfilePic.setImageResource(R.mipmap.ic_launcher);
-                } else{
+                } else {
                     Glide.with(MessageActivity.this).load(user.getImageUrl()).into(userProfilePic);
                 }
 
@@ -106,8 +119,9 @@ public class MessageActivity extends AppCompatActivity {
 
     }
 
-    private void  sendMessage(String sender, String receiver, String message){
+    private void sendMessage(String sender, String receiver, String message) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("sender", sender);
         hashMap.put("receiver", receiver);
@@ -116,17 +130,17 @@ public class MessageActivity extends AppCompatActivity {
         reference.child("Chats").push().setValue(hashMap);
     }
 
-    private void readMessages(String currid, String userid, String imageurl){
+    private void readMessages(String currid, String userid, String imageurl) {
         curr_chat = new ArrayList<>();
         reference = FirebaseDatabase.getInstance().getReference("Chats");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 curr_chat.clear();
-                for (DataSnapshot ds : snapshot.getChildren()){
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     Chat chat = ds.getValue(Chat.class);
                     if (chat.getReceiver().equals(currid) && chat.getSender().equals(userid) ||
-                            chat.getReceiver().equals(userid) && chat.getSender().equals(currid)){
+                            chat.getReceiver().equals(userid) && chat.getSender().equals(currid)) {
                         curr_chat.add(chat);
                     }
 
@@ -142,4 +156,5 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
     }
+
 }
